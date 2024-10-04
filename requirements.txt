@@ -1,2 +1,4 @@
 nbformat
 nbconvert
+matplotlib
+seaborn
