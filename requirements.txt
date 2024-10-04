@@ -1,8 +1,1 @@
-wheel>=0.40.0
-setuptools==75.1.0
-distutils
-matplotlib
-streamlit
-pandas
-nbconvert
-nbformat
+
