@@ -1,9 +1,6 @@
-pip>=24.2
 wheel>=0.40.0
 setuptools==75.1.0
 distutils
-python==3.10
-numpy>=1.26
 matplotlib
 streamlit
 pandas
