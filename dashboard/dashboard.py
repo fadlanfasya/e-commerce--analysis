@@ -2,7 +2,7 @@ import streamlit as st
 import nbformat
 from nbconvert import PythonExporter
 import matplotlib.pyplot as plt
-import io
+import pandas as pd
 
 # Define the path to your Jupyter notebook
 NOTEBOOK_PATH = "./analysis_data.ipynb"
@@ -25,14 +25,6 @@ def convert_notebook_to_python(nb):
 # Execute the converted notebook code
 def run_notebook_code(python_code, globals_dict):
     exec(python_code, globals_dict)
-
-# Function to capture matplotlib figures
-def capture_matplotlib_figures():
-    fig = plt.gcf()  # Get current figure
-    buf = io.BytesIO()  # Create buffer for storing the image
-    fig.savefig(buf, format="png")  # Save the figure to the buffer
-    buf.seek(0)  # Rewind the buffer to the beginning
-    return buf
 
 # Streamlit App Interface
 def main():
@@ -58,8 +50,14 @@ def main():
         
         # Display variables from the notebook
         for var_name, value in output_globals.items():
-            if not var_name.startswith("__"):
-                st.write(f"{var_name}: {value}")
+            if isinstance(value, pd.DataFrame):
+                st.subheader(f"DataFrame: {var_name}")
+                st.dataframe(value)  # Display pandas DataFrame
+            elif isinstance(value, (list, dict)):
+                st.subheader(f"{var_name}:")
+                st.write(value)  # Display lists, dictionaries
+            elif not var_name.startswith("__"):
+                st.write(f"{var_name}: {value}")  # Display other variables
         
         # Capture and display any matplotlib figures
         if plt.gcf().get_axes():  # Check if there's any active plot
